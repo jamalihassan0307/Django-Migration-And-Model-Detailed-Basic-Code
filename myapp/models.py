@@ -7,7 +7,7 @@ class Artist(models.Model):
 	bio =  models.TextField()
 
 class Genre(models.Model):
-	title = models.CharField(max_length = 30)
+	name = models.CharField(max_length = 30)
 
 
 class Production(models.Model):

@@ -11,17 +11,24 @@
     <div class="container">
         <div class="form-container">
             <h2>Add New Genre</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            
             <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
+                    <label for="name">Genre Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter genre name">
                 </div>
 
                 <button type="submit" class="button success-button">Save Genre</button>
+                <a href="{% url 'fetch_genre' %}" class="button primary-button">Back to Genres</a>
             </form>
         </div>
-        <a href="{% url 'fetch_genre' %}" class="back-link">← Back to Genre List</a>
     </div>
 </body>
 </html> 

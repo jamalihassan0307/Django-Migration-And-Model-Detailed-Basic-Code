@@ -5,7 +5,7 @@ from django.contrib import messages
 def create_song(request):
     if request.method == 'POST':
         title = request.POST.get('title')
-        released_date = request.POST.get('released_date')
+        release_date = request.POST.get('released_date')
         duration = request.POST.get('duration')
         production_id = request.POST.get('production')
         artist_ids = request.POST.getlist('artists')
@@ -15,7 +15,7 @@ def create_song(request):
             production = Production.objects.get(id=production_id)
             song = Song.objects.create(
                 title=title,
-                released_date=released_date,
+                release_date=release_date,  
                 duration=duration,
                 production=production
             )
@@ -43,7 +43,7 @@ def create_song(request):
         'genres': genres,
         'productions': productions
     }
-    return render(request, 'song_form.html', context)
+    return render(request, 'song/song_form.html', context)
 
 def fetch_songs(request):
     songs = Song.objects.all()
@@ -61,7 +61,7 @@ def edit_song(request, id):
     
     if request.method == 'POST':
         song.title = request.POST.get('title')
-        song.released_date = request.POST.get('released_date')
+        song.release_date = request.POST.get('released_date')
         song.duration = request.POST.get('duration')
         production_id = request.POST.get('production')
         artist_ids = request.POST.getlist('artists')
@@ -97,7 +97,7 @@ def edit_song(request, id):
         'genres': genres,
         'productions': productions
     }
-    return render(request, 'edit_song.html', context)
+    return render(request, 'song/edit_song.html', context)
 
 def create_artist(request):
     if request.method == 'POST':
@@ -150,7 +150,7 @@ def edit_artist(request, id):
 def fetch_production(request):
     productions = Production.objects.all()
     context = {'productions': productions}
-    return render(request, 'production.html', context)
+    return render(request, 'production/production.html', context)
 
 def create_production(request):
     if request.method == 'POST':
@@ -165,7 +165,7 @@ def create_production(request):
             messages.error(request, f'Error creating production: {str(e)}')
             return redirect('create_production')
     
-    return render(request, 'create_production.html')
+    return render(request, 'production/create_production.html')
 
 def edit_production(request, id):
     production = get_object_or_404(Production, id=id)
@@ -183,7 +183,7 @@ def edit_production(request, id):
             return redirect('edit_production', id=id)
     
     context = {'production': production}
-    return render(request, 'edit_production.html', context)
+    return render(request, 'production/edit_production.html', context)
 
 def delete_production(request, id):
     production = get_object_or_404(Production, id=id)
@@ -198,11 +198,15 @@ def fetch_genre(request):
 
 def create_genre(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
+        title = request.POST.get('name')
+        
+        if not title:
+            messages.error(request, 'Genre name is required')
+            return redirect('create_genre')
         
         try:
-            Genre.objects.create(name=name)
-            messages.success(request, 'Genre created successfully!')
+            Genre.objects.create(name=title)
+            messages.success(request, 'Genre created successfully')
             return redirect('fetch_genre')
         except Exception as e:
             messages.error(request, f'Error creating genre: {str(e)}')
@@ -214,7 +218,7 @@ def edit_genre(request, id):
     genre = get_object_or_404(Genre, id=id)
     
     if request.method == 'POST':
-        genre.name = request.POST.get('name')
+        genre.title = request.POST.get('name')
         
         try:
             genre.save()
@@ -295,12 +299,14 @@ def dashboard(request):
     songs_count = Song.objects.count()
     artists_count = Artist.objects.count()
     genres_count = Genre.objects.count()
+    productions_count = Production.objects.count()
     playlists_count = Playlist.objects.count()
     
     context = {
         'songs_count': songs_count,
         'artists_count': artists_count,
         'genres_count': genres_count,
+        'productions_count': productions_count,
         'playlists_count': playlists_count
     }
     

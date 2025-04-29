@@ -6,15 +6,9 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-}
-
-h2 {
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 28px;
 }
 
 .form-container {
@@ -23,7 +17,12 @@ h2 {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-bottom: 20px;
-    max-width: 600px;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
 }
 
 .form-group {
@@ -58,24 +57,8 @@ input[type="text"]:focus {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
-}
-
-.primary-button {
-    background-color: #007bff;
-    color: white;
-}
-
-.primary-button:hover {
-    background-color: #0056b3;
-}
-
-.danger-button {
-    background-color: #dc3545;
-    color: white;
-}
-
-.danger-button:hover {
-    background-color: #c82333;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .success-button {
@@ -87,6 +70,38 @@ input[type="text"]:focus {
     background-color: #218838;
 }
 
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.message {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Table styles */
 .table-container {
     background-color: white;
     padding: 20px;
@@ -122,14 +137,20 @@ input[type="text"]:focus {
     gap: 10px;
 }
 
-.back-link {
-    display: inline-block;
-    margin-top: 20px;
-    color: #007bff;
-    text-decoration: none;
-    font-weight: 500;
+.primary-button {
+    background-color: #007bff;
+    color: white;
 }
 
-.back-link:hover {
-    text-decoration: underline;
+.primary-button:hover {
+    background-color: #0056b3;
+}
+
+.danger-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.danger-button:hover {
+    background-color: #c82333;
 } 
