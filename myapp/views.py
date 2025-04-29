@@ -5,7 +5,7 @@ from django.contrib import messages
 def create_song(request):
     if request.method == 'POST':
         title = request.POST.get('title')
-        released_date = request.POST.get('released_date')  # Keep as string
+        released_date = request.POST.get('released_date')
         duration = request.POST.get('duration')
         production_id = request.POST.get('production')
         artist_ids = request.POST.getlist('artists')
@@ -15,7 +15,7 @@ def create_song(request):
             production = Production.objects.get(id=production_id)
             song = Song.objects.create(
                 title=title,
-                released_date=released_date,  # Store as string
+                released_date=released_date,
                 duration=duration,
                 production=production
             )
@@ -61,7 +61,7 @@ def edit_song(request, id):
     
     if request.method == 'POST':
         song.title = request.POST.get('title')
-        song.released_date = request.POST.get('released_date')  # Keep as string
+        song.released_date = request.POST.get('released_date')
         song.duration = request.POST.get('duration')
         production_id = request.POST.get('production')
         artist_ids = request.POST.getlist('artists')
@@ -71,13 +71,11 @@ def edit_song(request, id):
             song.production = Production.objects.get(id=production_id)
             song.save()
 
-            # Update artists
             song.artists.clear()
             for artist_id in artist_ids:
                 artist = Artist.objects.get(id=artist_id)
                 song.artists.add(artist)
 
-            # Update genres
             song.genres.clear()
             for genre_id in genre_ids:
                 genre = Genre.objects.get(id=genre_id)
@@ -105,28 +103,49 @@ def create_artist(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        Artist.objects.create(first_name=first_name, last_name=last_name)
-        return redirect('featch_artist')
-    return render(request, 'create_artist.html')
+        bio = request.POST.get('bio')
+        
+        try:
+            Artist.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                bio=bio
+            )
+            messages.success(request, 'Artist created successfully!')
+            return redirect('fetch_artist')
+        except Exception as e:
+            messages.error(request, f'Error creating artist: {str(e)}')
+            return redirect('create_artist')
+    
+    return render(request, 'artist_pages/create_artist.html')
 
-def featch_artist(request):
+def fetch_artist(request):
     artists = Artist.objects.all()
     context = {'singers': artists}
-    return render(request, "artist.html", context)
+    return render(request, "artist_pages/artist.html", context)
 
 def delete_artist(request, id):
     artist = get_object_or_404(Artist, id=id)
     artist.delete()
-    return redirect('featch_artist')
+    messages.success(request, 'Artist deleted successfully!')
+    return redirect('fetch_artist')
 
 def edit_artist(request, id):
     artist = get_object_or_404(Artist, id=id)
     if request.method == 'POST':
         artist.first_name = request.POST.get('first_name')
         artist.last_name = request.POST.get('last_name')
-        artist.save()
-        return redirect('featch_artist')
-    return render(request, 'edit_artist.html', {'artist': artist})
+        artist.bio = request.POST.get('bio')
+        
+        try:
+            artist.save()
+            messages.success(request, 'Artist updated successfully!')
+            return redirect('fetch_artist')
+        except Exception as e:
+            messages.error(request, f'Error updating artist: {str(e)}')
+            return redirect('edit_artist', id=id)
+    
+    return render(request, 'artist_pages/edit_artist.html', {'artist': artist})
 
 def fetch_production(request):
     productions = Production.objects.all()
@@ -175,7 +194,7 @@ def delete_production(request, id):
 def fetch_genre(request):
     genres = Genre.objects.all()
     context = {'genres': genres}
-    return render(request, 'genre.html', context)
+    return render(request, 'genre/genre.html', context)
 
 def create_genre(request):
     if request.method == 'POST':
@@ -189,7 +208,7 @@ def create_genre(request):
             messages.error(request, f'Error creating genre: {str(e)}')
             return redirect('create_genre')
     
-    return render(request, 'create_genre.html')
+    return render(request, 'genre/create_genre.html')
 
 def edit_genre(request, id):
     genre = get_object_or_404(Genre, id=id)
@@ -206,7 +225,7 @@ def edit_genre(request, id):
             return redirect('edit_genre', id=id)
     
     context = {'genre': genre}
-    return render(request, 'edit_genre.html', context)
+    return render(request, 'genre/edit_genre.html', context)
 
 def delete_genre(request, id):
     genre = get_object_or_404(Genre, id=id)
