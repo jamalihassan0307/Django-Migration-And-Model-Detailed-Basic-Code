@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Artist</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h2>Edit Artist</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" value="{{ artist.first_name }}" required><br><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" value="{{ artist.last_name }}" required><br><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+    <br>
+    <a href="{% url 'featch_artist' %}">Back to Artist List</a>
+</body>
+</html>
