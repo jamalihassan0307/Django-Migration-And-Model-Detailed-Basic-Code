@@ -297,20 +297,11 @@ def dashboard(request):
     genres_count = Genre.objects.count()
     playlists_count = Playlist.objects.count()
     
-    # Get recent activities (you can customize this based on your needs)
-    recent_activities = [
-        {
-            'description': f'New song "{song.title}" added',
-            'timestamp': song.created_at
-        } for song in Song.objects.order_by('-created_at')[:5]
-    ]
-    
     context = {
         'songs_count': songs_count,
         'artists_count': artists_count,
         'genres_count': genres_count,
-        'playlists_count': playlists_count,
-        'recent_activities': recent_activities
+        'playlists_count': playlists_count
     }
     
     return render(request, 'dashboard.html', context)

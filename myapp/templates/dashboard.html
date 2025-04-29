@@ -99,27 +99,6 @@
             margin-right: 10px;
             color: #007bff;
         }
-        
-        .recent-activity {
-            margin-top: 30px;
-        }
-        
-        .activity-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .activity-item {
-            padding: 10px;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .activity-item:last-child {
-            border-bottom: none;
-        }
     </style>
 </head>
 <body>
@@ -197,20 +176,6 @@
                         </a>
                     </div>
                 </div>
-            </div>
-            
-            <div class="recent-activity">
-                <h3 class="section-title">Recent Activity</h3>
-                <ul class="activity-list">
-                    {% for activity in recent_activities %}
-                        <li class="activity-item">
-                            <span>{{ activity.description }}</span>
-                            <small>{{ activity.timestamp|date:"M d, Y H:i" }}</small>
-                        </li>
-                    {% empty %}
-                        <li class="activity-item">No recent activity</li>
-                    {% endfor %}
-                </ul>
             </div>
         </div>
     </div>
