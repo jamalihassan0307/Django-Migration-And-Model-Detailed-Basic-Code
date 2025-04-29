@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Management Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/song.css' %}">
+    <style>
+        .dashboard-container {
+            padding: 20px;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-title {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .dashboard-subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            color: #007bff;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .section-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .section-link {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s;
+        }
+        
+        .section-link:hover {
+            background: #e9ecef;
+        }
+        
+        .section-link i {
+            margin-right: 10px;
+            color: #007bff;
+        }
+        
+        .recent-activity {
+            margin-top: 30px;
+        }
+        
+        .activity-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .activity-item {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Music Management Dashboard</h1>
+                <p class="dashboard-subtitle">Welcome to your music management system</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">{{ songs_count }}</div>
+                    <div class="stat-label">Total Songs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ artists_count }}</div>
+                    <div class="stat-label">Total Artists</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ genres_count }}</div>
+                    <div class="stat-label">Total Genres</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ playlists_count }}</div>
+                    <div class="stat-label">Total Playlists</div>
+                </div>
+            </div>
+            
+            <div class="section-grid">
+                <div class="section-card">
+                    <h3 class="section-title">Songs Management</h3>
+                    <div class="section-links">
+                        <a href="{% url 'song_form' %}" class="section-link">
+                            <i>🎵</i> Create New Song
+                        </a>
+                        <a href="{% url 'fetch_songs' %}" class="section-link">
+                            <i>📋</i> View All Songs
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="section-card">
+                    <h3 class="section-title">Artists Management</h3>
+                    <div class="section-links">
+                        <a href="{% url 'create_artist' %}" class="section-link">
+                            <i>👤</i> Create New Artist
+                        </a>
+                        <a href="{% url 'fetch_artist' %}" class="section-link">
+                            <i>📋</i> View All Artists
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="section-card">
+                    <h3 class="section-title">Genres Management</h3>
+                    <div class="section-links">
+                        <a href="{% url 'create_genre' %}" class="section-link">
+                            <i>🎼</i> Create New Genre
+                        </a>
+                        <a href="{% url 'fetch_genre' %}" class="section-link">
+                            <i>📋</i> View All Genres
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="section-card">
+                    <h3 class="section-title">Playlists Management</h3>
+                    <div class="section-links">
+                        <a href="{% url 'create_playlist' %}" class="section-link">
+                            <i>📝</i> Create New Playlist
+                        </a>
+                        <a href="{% url 'playlists' %}" class="section-link">
+                            <i>📋</i> View All Playlists
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recent-activity">
+                <h3 class="section-title">Recent Activity</h3>
+                <ul class="activity-list">
+                    {% for activity in recent_activities %}
+                        <li class="activity-item">
+                            <span>{{ activity.description }}</span>
+                            <small>{{ activity.timestamp|date:"M d, Y H:i" }}</small>
+                        </li>
+                    {% empty %}
+                        <li class="activity-item">No recent activity</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

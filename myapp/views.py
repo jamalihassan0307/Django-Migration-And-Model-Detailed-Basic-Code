@@ -290,4 +290,29 @@ def delete_playlist(request, playlist_id):
     
     return render(request, 'playlist/playlist_confirm_delete.html', {'playlist': playlist})
 
+def dashboard(request):
+    # Get counts for statistics
+    songs_count = Song.objects.count()
+    artists_count = Artist.objects.count()
+    genres_count = Genre.objects.count()
+    playlists_count = Playlist.objects.count()
+    
+    # Get recent activities (you can customize this based on your needs)
+    recent_activities = [
+        {
+            'description': f'New song "{song.title}" added',
+            'timestamp': song.created_at
+        } for song in Song.objects.order_by('-created_at')[:5]
+    ]
+    
+    context = {
+        'songs_count': songs_count,
+        'artists_count': artists_count,
+        'genres_count': genres_count,
+        'playlists_count': playlists_count,
+        'recent_activities': recent_activities
+    }
+    
+    return render(request, 'dashboard.html', context)
+
 
