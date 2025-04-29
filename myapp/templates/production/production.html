@@ -4,77 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productions</title>
-    <style>
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .table th, .table td {
-            border: 1px solid #333;
-            padding: 10px;
-            text-align: left;
-        }
-
-        .actions button {
-            margin-right: 5px;
-            padding: 5px 10px;
-        }
-
-        .create-button {
-            margin-top: 20px;
-            padding: 10px 15px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .edit-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-        }
-
-        .delete-button {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-        }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/production.css' %}">
 </head>
 <body>
-    <a href="{% url 'create_production' %}">
-        <button class="create-button">+ Create New Production</button>
-    </a>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Bio</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for production in productions %}
-                <tr>
-                    <td>{{ production.id }}</td>
-                    <td>{{ production.name }}</td>
-                    <td>{{ production.bio }}</td>
-                    <td class="actions">
-                        <a href="{% url 'edit_production' production.id %}">
-                            <button class="edit-button">Edit</button>
-                        </a>
-                        <a href="{% url 'delete_production' production.id %}" onclick="return confirm('Are you sure you want to delete this production?');">
-                            <button class="delete-button">Delete</button>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="table-container">
+            <h2>Productions</h2>
+            <a href="{% url 'create_production' %}" class="button success-button">+ Create New Production</a>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Bio</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for production in productions %}
+                        <tr>
+                            <td>{{ production.id }}</td>
+                            <td>{{ production.name }}</td>
+                            <td class="bio-preview">{{ production.bio }}</td>
+                            <td class="actions">
+                                <a href="{% url 'edit_production' production.id %}">
+                                    <button class="button primary-button">Edit</button>
+                                </a>
+                                <a href="{% url 'delete_production' production.id %}" onclick="return confirm('Are you sure you want to delete this production?');">
+                                    <button class="button danger-button">Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html> 
