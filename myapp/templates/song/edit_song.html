@@ -1,105 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Song</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select { padding: 8px; margin-bottom: 10px; width: 300px; }
-        .checkbox-group { 
-            border: 1px solid #ddd; 
-            padding: 10px; 
-            max-height: 200px; 
-            overflow-y: auto;
-            width: 300px;
-        }
-        .checkbox-item { 
-            margin-bottom: 5px; 
-            display: block;
-        }
-        .checkbox-item input[type="checkbox"] {
-            margin-right: 8px;
-            width: auto;
-        }
-        button { 
-            padding: 8px 15px; 
-            margin-right: 10px; 
-            cursor: pointer;
-            background-color: #007bff;
-            color: white;
-            border: none;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #007bff;
-            text-decoration: none;
-        }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/song.css' %}">
 </head>
 <body>
-    <h2>Edit Song</h2>
-    
-    <form method="post">
-        {% csrf_token %}
-        
-        <div class="form-group">
-            <label for="title">Song Title:</label>
-            <input type="text" id="title" name="title" value="{{ song.title }}" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="released_date">Release Date:</label>
-            <input type="date" id="released_date" name="released_date" value="{{ song.released_date|date:'Y-m-d' }}" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="duration">Duration (HH:MM:SS):</label>
-            <input type="text" id="duration" name="duration" value="{{ song.duration }}" placeholder="00:03:30" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="production">Production:</label>
-            <select id="production" name="production" required>
-                <option value="">-- Select Production --</option>
-                {% for production in productions %}
-                    <option value="{{ production.id }}" {% if production.id == song.production.id %}selected{% endif %}>
-                        {{ production.name }}
-                    </option>
+    <div class="container">
+        <div class="form-container">
+            <h2>Edit Song</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
                 {% endfor %}
-            </select>
+            {% endif %}
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="title">Song Title</label>
+                    <input type="text" id="title" name="title" value="{{ song.title }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="released_date">Release Date</label>
+                    <input type="date" id="released_date" name="released_date" value="{{ song.released_date|date:'Y-m-d' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration">Duration (HH:MM:SS)</label>
+                    <input type="text" id="duration" name="duration" value="{{ song.duration }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="production">Production</label>
+                    <select id="production" name="production" required>
+                        <option value="">-- Select Production --</option>
+                        {% for production in productions %}
+                            <option value="{{ production.id }}" {% if production.id == song.production.id %}selected{% endif %}>
+                                {{ production.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Artists</label>
+                    <div class="checkbox-group">
+                        {% for artist in artists %}
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="artists" value="{{ artist.id }}"
+                                    {% if artist in song.artists.all %}checked{% endif %}>
+                                {{ artist.first_name }} {{ artist.last_name }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Genres</label>
+                    <div class="checkbox-group">
+                        {% for genre in genres %}
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="genres" value="{{ genre.id }}"
+                                    {% if genre in song.genres.all %}checked{% endif %}>
+                                {{ genre.name }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <button type="submit" class="button success-button">Update Song</button>
+                <a href="{% url 'songs' %}" class="button primary-button">Back to Songs</a>
+            </form>
         </div>
-        
-        <div class="form-group">
-            <label>Artists:</label>
-            <div class="checkbox-group">
-                {% for artist in artists %}
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="artists" value="{{ artist.id }}" 
-                            {% if artist in song.artists.all %}checked{% endif %}>
-                        {{ artist.first_name }} {{ artist.last_name }}
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <label>Genres:</label>
-            <div class="checkbox-group">
-                {% for genre in genres %}
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="genres" value="{{ genre.id }}"
-                            {% if genre in song.genres.all %}checked{% endif %}>
-                        {{ genre.name }}
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <button type="submit">Save Changes</button>
-    </form>
-    
-    <a href="{% url 'fetch_songs' %}" class="back-link">Back to Songs List</a>
+    </div>
 </body>
 </html> 
