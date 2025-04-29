@@ -2,23 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Artist</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/artist.css' %}">
 </head>
 <body>
-    <h2>Add New Artist</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="first_name">First Name:</label>
-        <input type="text" name="first_name" required><br><br>
+    <div class="container">
+        <div class="form-container">
+            <h2>Add New Artist</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name" required>
+                </div>
 
-        <label for="last_name">Last Name:</label>
-        <input type="text" name="last_name" required><br><br>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name" required>
+                </div>
 
-        <button type="submit">Save</button>
-    </form>
-    <br>
-    <a href="{% url 'featch_artist' %}">Back to Artist List</a>
+                <div class="form-group">
+                    <label for="bio">Biography</label>
+                    <textarea name="bio" required></textarea>
+                </div>
+
+                <button type="submit" class="button success-button">Save Artist</button>
+            </form>
+        </div>
+        <a href="{% url 'fetch_artist' %}" class="back-link">← Back to Artist List</a>
+    </div>
 </body>
 </html>

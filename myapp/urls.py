@@ -7,8 +7,8 @@ urlpatterns = [
     path('songs/<int:id>/edit/', views.edit_song, name='edit_song'),
     path('songs/<int:id>/delete/', views.delete_song, name='delete_song'),
 
-    path('featch_artist/', views.featch_artist, name='featch_artist'),
-    path('create_artist/', views.create_artist, name='create_artist'),
+    path('artists/', views.fetch_artist, name='fetch_artist'),
+    path('artists/create/', views.create_artist, name='create_artist'),
     path('artists/<int:id>/edit/', views.edit_artist, name='edit_artist'),
     path('artists/<int:id>/delete/', views.delete_artist, name='delete_artist'),
 
