@@ -21,4 +21,9 @@ urlpatterns = [
     path('create_genre/', views.create_genre, name='create_genre'),
     path('genres/<int:id>/edit/', views.edit_genre, name='edit_genre'),
     path('genres/<int:id>/delete/', views.delete_genre, name='delete_genre'),
+
+    path('playlists/', views.playlists, name='playlists'),
+    path('playlists/create/', views.create_playlist, name='create_playlist'),
+    path('playlists/<int:playlist_id>/edit/', views.edit_playlist, name='edit_playlist'),
+    path('playlists/<int:playlist_id>/delete/', views.delete_playlist, name='delete_playlist'),
 ]

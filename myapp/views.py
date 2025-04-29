@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Artist, Production, Genre, Song
+from .models import Artist, Production, Genre, Song, Playlist
 from django.contrib import messages
 
 def create_song(request):
@@ -232,5 +232,62 @@ def delete_genre(request, id):
     genre.delete()
     messages.success(request, 'Genre deleted successfully!')
     return redirect('fetch_genre')
+
+def playlists(request):
+    playlists = Playlist.objects.all()
+    return render(request, 'playlist/playlist_list.html', {'playlists': playlists})
+
+def create_playlist(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        song_ids = request.POST.getlist('songs')
+        
+        if not title:
+            messages.error(request, 'Playlist title is required')
+            return redirect('create_playlist')
+        
+        playlist = Playlist.objects.create(title=title)
+        if song_ids:
+            playlist.songs.set(song_ids)
+        
+        messages.success(request, 'Playlist created successfully')
+        return redirect('playlists')
+    
+    songs = Song.objects.all()
+    return render(request, 'playlist/playlist_form.html', {'songs': songs})
+
+def edit_playlist(request, playlist_id):
+    playlist = get_object_or_404(Playlist, id=playlist_id)
+    
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        song_ids = request.POST.getlist('songs')
+        
+        if not title:
+            messages.error(request, 'Playlist title is required')
+            return redirect('edit_playlist', playlist_id=playlist_id)
+        
+        playlist.title = title
+        playlist.save()
+        playlist.songs.set(song_ids)
+        
+        messages.success(request, 'Playlist updated successfully')
+        return redirect('playlists')
+    
+    songs = Song.objects.all()
+    return render(request, 'playlist/playlist_form.html', {
+        'playlist': playlist,
+        'songs': songs
+    })
+
+def delete_playlist(request, playlist_id):
+    playlist = get_object_or_404(Playlist, id=playlist_id)
+    
+    if request.method == 'POST':
+        playlist.delete()
+        messages.success(request, 'Playlist deleted successfully')
+        return redirect('playlists')
+    
+    return render(request, 'playlist/playlist_confirm_delete.html', {'playlist': playlist})
 
 

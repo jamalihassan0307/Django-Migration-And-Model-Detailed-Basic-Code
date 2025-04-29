@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlists</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/song.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="table-container">
+            <h2>Playlists</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            
+            <a href="{% url 'create_playlist' %}" class="button primary-button">Create New Playlist</a>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Number of Songs</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for playlist in playlists %}
+                        <tr>
+                            <td>{{ playlist.title }}</td>
+                            <td>{{ playlist.songs.count }}</td>
+                            <td class="actions">
+                                <a href="{% url 'edit_playlist' playlist.id %}" class="button primary-button">Edit</a>
+                                <a href="{% url 'delete_playlist' playlist.id %}" class="button danger-button">Delete</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3">No playlists available</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html> 
