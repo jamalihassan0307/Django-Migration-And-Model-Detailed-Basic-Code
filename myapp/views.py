@@ -48,7 +48,7 @@ def create_song(request):
 def fetch_songs(request):
     songs = Song.objects.all()
     context = {'songs': songs}
-    return render(request, 'songs.html', context)
+    return render(request, 'song/songs.html', context)
 
 def delete_song(request, id):
     song = get_object_or_404(Song, id=id)
