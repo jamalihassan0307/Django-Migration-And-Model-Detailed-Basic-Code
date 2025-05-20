@@ -2,6 +2,39 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Artist, Production, Genre, Song, Playlist
 from django.contrib import messages
 
+from .serializers import ArtistSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .forms import ArtistForm
+
+
+def create_ArtistForm(request):
+    if request.method == 'POST':
+        form = ArtistForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Artist created successfully!')
+            return redirect('fetch_artist')
+    else:
+        form = ArtistForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'artist_pages/create_artist1.html', context)
+
+@api_view(['GET'])
+def item_list(request):
+    items = Artist.objects.all()
+    serializer = ArtistSerializer(items, many=True)
+    return Response(serializer.data)
+@api_view(['POST'])
+def item_create(request):
+    serializer = ArtistSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
+
 def create_song(request):
     if request.method == 'POST':
         title = request.POST.get('title')
