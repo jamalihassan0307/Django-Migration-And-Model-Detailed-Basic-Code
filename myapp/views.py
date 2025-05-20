@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Artist, Production, Genre, Song, Playlist
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+import json
+from django.contrib.auth.decorators import login_required
 
 from .serializers import ArtistSerializer
 from rest_framework.response import Response
@@ -327,22 +332,45 @@ def delete_playlist(request, playlist_id):
     
     return render(request, 'playlist/playlist_confirm_delete.html', {'playlist': playlist})
 
+def login_view(request):
+    if request.user.is_authenticated:
+        # User is already logged in, show their info
+        return render(request, 'login.html')
+    return render(request, 'login.html')
+
+@login_required
 def dashboard(request):
-    # Get counts for statistics
-    songs_count = Song.objects.count()
-    artists_count = Artist.objects.count()
-    genres_count = Genre.objects.count()
-    productions_count = Production.objects.count()
-    playlists_count = Playlist.objects.count()
-    
     context = {
-        'songs_count': songs_count,
-        'artists_count': artists_count,
-        'genres_count': genres_count,
-        'productions_count': productions_count,
-        'playlists_count': playlists_count
+        'songs_count': 0,
+        'playlists_count': 0,
     }
-    
     return render(request, 'dashboard.html', context)
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def google_login(request):
+    try:
+        data = json.loads(request.body)
+        credential = data.get('credential')
+        
+        if not credential:
+            return JsonResponse({'success': False, 'error': 'No credential provided'})
+        
+        # Here you would typically:
+        # 1. Verify the token with Google
+        # 2. Create or update user in your database
+        # 3. Create a session for the user
+        
+        # For now, we'll just return success
+        return JsonResponse({
+            'success': True,
+            'redirect_url': '/dashboard/'  # Redirect to dashboard after login
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        })
 
 

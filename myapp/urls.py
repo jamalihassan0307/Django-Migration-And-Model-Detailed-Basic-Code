@@ -32,4 +32,7 @@ urlpatterns = [
     path('items/', views.item_list),
     path('item_create/', views.item_create),
     path('create_artist1/', views.create_ArtistForm),
+
+    path('login/', views.login_view, name='login'),
+    path('login/google/', views.google_login, name='google_login'),
 ]
