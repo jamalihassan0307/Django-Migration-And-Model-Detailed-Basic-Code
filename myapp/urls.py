@@ -28,4 +28,8 @@ urlpatterns = [
     path('playlists/<int:playlist_id>/delete/', views.delete_playlist, name='delete_playlist'),
 
     path('', views.dashboard, name='dashboard'),
+    
+    path('items/', views.item_list),
+    path('item_create/', views.item_create),
+    path('create_artist1/', views.create_ArtistForm),
 ]
