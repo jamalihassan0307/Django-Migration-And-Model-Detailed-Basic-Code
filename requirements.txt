@@ -1,7 +1,7 @@
-Django==4.2.7
-social-auth-app-django==4.0.0
+Django==3.2.24
+social-auth-app-django==5.4.0
 djangorestframework==3.14.0
 dj-database-url==2.1.0
 python-dotenv==1.0.0
 whitenoise==6.5.0
-gunicorn==21.2.0 
+gunicorn==21.2.0
