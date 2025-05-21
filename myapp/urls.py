@@ -34,5 +34,6 @@ urlpatterns = [
     path('create_artist1/', views.create_ArtistForm),
 
     path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
     path('login/google/', views.google_login, name='google_login'),
 ]
