@@ -23,7 +23,7 @@ SECRET_KEY = 'django-insecure-03o(=gw0@x1v0lexojgi+(6i*bvmo#2_17%y%ot5(dq&n%!4l$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['jamalihassan0307.pythonanywhere.com', 'www.jamalihassan0307.pythonanywhere.com']
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "jamalihassan0307.pythonanywhere.com"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -73,10 +73,9 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default="sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3")
+    )
 }
 
 # Password validation
