@@ -96,6 +96,7 @@
         }
         .logout-btn {
             margin-top: 15px;
+            width: 100%;
         }
     </style>
 </head>
@@ -117,7 +118,10 @@
                     <p><strong>Email:</strong> {{ user.email }}</p>
                     <p><strong>Username:</strong> {{ user.username }}</p>
                     <p><strong>Last Login:</strong> {{ user.last_login|date:"F j, Y, g:i a" }}</p>
-                    <a href="{% url 'logout' %}" class="btn btn-danger logout-btn">Logout</a>
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger logout-btn">Logout</button>
+                    </form>
                 </div>
             {% else %}
                 <div class="card">
