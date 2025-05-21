@@ -348,7 +348,6 @@ def logout_view(request):
     messages.success(request, 'Successfully logged out!')
     return redirect('login')
 
-@login_required
 def dashboard(request):
     context = {
         'songs_count': 0,
