@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 import json
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 from .serializers import ArtistSerializer
 from rest_framework.response import Response
@@ -335,8 +336,17 @@ def delete_playlist(request, playlist_id):
 def login_view(request):
     if request.user.is_authenticated:
         # User is already logged in, show their info
-        return render(request, 'login.html')
+        context = {
+            'user': request.user,
+            'is_authenticated': True
+        }
+        return render(request, 'login.html', context)
     return render(request, 'login.html')
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'Successfully logged out!')
+    return redirect('login')
 
 @login_required
 def dashboard(request):
@@ -364,7 +374,7 @@ def google_login(request):
         # For now, we'll just return success
         return JsonResponse({
             'success': True,
-            'redirect_url': '/dashboard/'  # Redirect to dashboard after login
+            'redirect_url': '/login/'  # Keep redirecting to login page
         })
         
     except Exception as e:
