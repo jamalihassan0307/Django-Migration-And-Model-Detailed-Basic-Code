@@ -111,6 +111,25 @@ STATIC_URL = '/static/'
 # This is where collectstatic will collect all static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+
+
+
+
+
+
+
+
+
+
+
+
+# During development, STATICFILES_DIRS points to source folders
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# For collectstatic target
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
 # Optional: if you also want to include static files from apps (recommended)
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'myapp/static'),
